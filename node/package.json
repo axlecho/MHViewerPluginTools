@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "cheerio-eq": "^1.0.1",
     "commander": "^3.0.0",
-    "requirejs": "^2.3.6"
+    "requirejs": "^2.3.6",
+    "sync-request": "^6.1.0"
   }
 }
