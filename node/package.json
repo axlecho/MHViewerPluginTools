@@ -1,0 +1,20 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "MHViewer插件辅助工具",
+  "main": "tools.js",
+  "scripts": {
+    "start": "node tools.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MHViewer"
+  ],
+  "author": "axlecho",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "commander": "^3.0.0",
+    "requirejs": "^2.3.6"
+  }
+}
