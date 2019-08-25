@@ -1,9 +1,9 @@
 {
-  "host": "https://www.177mh.net",
-  "top": "/",
-  "search": "https://so.177mh.net/k.php?k=${keyword}&p=${page}",
-  "recent": "/",
-  "info": "/colist_${gid}.html",
+  "host": "http://www.dm5.com",
+  "top": "/manhua-rank/?t=4",
+  "search": "/search?title=${keyword}&page=${page}",
+  "recent": "/manhua-new/",
+  "info": "/${gid}/",
   "data": "${cid}",
   "comment": "https://i.readingbox.net/ajax/utf8_json_cmlist_v2.php?page=${page}&cid=${gid}"
 }

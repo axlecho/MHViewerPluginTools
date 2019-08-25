@@ -1,7 +1,7 @@
 
  // var api.console = {   log : function(msg) { log.println(msg)} }
 
-var api = {
+var api = api || {
     console : {},
     doc : {},
     info : function(gid) {return info(gid)},
@@ -11,23 +11,6 @@ var api = {
 }
 
 
-function DomNode(node) {
-    this.html = function(cssQuery) { return (cssQuery === undefined ? node.html() : node.html(cssQuery)) + ''};
-    this.text = function(cssQuery) { return (cssQuery === undefined ? node.text() : node.text(cssQuery)) + ''};
-    this.src  = function(cssQuery) { return (cssQuery === undefined ? node.src() : node.src(cssQuery)) + ''};
-    this.href = function(cssQuery) { return (cssQuery === undefined ? node.href() : node.href(cssQuery)) + ''};
-    this.attr = function(attr,cssQuery) { return (cssQuery ===undefined ? node.attr(attr) : node.attr(cssQuery,attr)) + ''};
-    // Warning this function return a java object
-    this.list = function(cssQuery) { 
-        var result = [];
-        for (var i = 0; i < node.list(cssQuery).size(); i++) {
-            result.push(new DomNode(node.list(cssQuery).get(i)));
-        }
-        return result;
-    };
-}
-
-// var api.doc = new DomNode(jsoup)
 
 function parseTitle() {
     return jsoup.text('ul.ar_list_coc li:eq(0)') + '';
@@ -63,7 +46,7 @@ function info(gid) {
 function recent() {
     var result = {};
     result.datas = [];
-    api.doc.list('ul.new_hits_ul li').forEach(function(v,i){
+    api.doc.list('ul#ConmmandComicTab1_Content0 li').forEach(function(v,i){
         var item = {};
         item.gid = v.href('a').replace(/[^0-9]/ig,'');
         item.title = v.text('a');
@@ -74,19 +57,18 @@ function recent() {
     result.pages = 1;
     result.currentPage = 1;
     
-    api.console.log(result);
+    //api.console.log(result);
     return JSON.stringify(result); 
 }
 
 function _top() {
     var result = {};
     result.datas = [];
-    api.doc.list('ul.new_hits_ul li').forEach(function(v,i){
+    api.doc.list('ul#ConmmandComicTab1_Content0 li').forEach(function(v,i){
         var item = {};
         item.gid = v.href('a').replace(/[^0-9]/ig,'');
-        item.title = v.text('a');
+        item.title = v.text('i');
         item.thumb = v.src('img');
-        api.console.log(item);
         result.datas.push(item);
     });
     result.pages = 1;
@@ -97,16 +79,26 @@ function _top() {
 function search() {
     var result = {};
     result.datas = [];
-    api.doc.list('div.ar_list_co ul dl').forEach(function(v,i){
+    api.doc.list('ul.mh-list li').forEach(function(v,i){
         var item = {};
-        item.gid = v.href('a').replace('https://www.177mh.net','').replace(/[^0-9]/ig,'');
-        item.title = v.text('h1');
-        item.thumb = v.src('img');
-        item.uploader = v.text('i.author a:eq(1)')
+        item.gid = v.href('a').replace(/\//g,'');
+        item.title = v.text('h2 ');
+        // item.thumb = v.attr('p','style').replace('background-image: url(',"").replace(')','');
+        item.uploader = v.text('p.author a')
         result.datas.push(item);
-    });
-    result.pages = api.doc.text('div.pages_s').split('/')[1].replace(/[^0-9]/ig,'');
-    result.currentPage = api.doc.text('div.pages_s').split('/')[0].replace(/[^0-9]/ig,'');
+    })
+    var pages = 1;
+    result.currentPage = api.doc.text('div.page-pagination a.active')
+    api.doc.list('div.page-pagination a').forEach(function(v,i) {
+        // console.log(i)
+        var index = parseInt(v.text().trim())
+        if(!isNaN(index)) {
+            if(pages < index) {
+                pages = index
+            }
+        }
+    })
+    result.pages = pages;
     return JSON.stringify(result);   
 };
 
